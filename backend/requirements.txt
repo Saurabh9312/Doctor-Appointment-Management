@@ -1,0 +1,17 @@
+Django>=5.0
+djangorestframework
+django-cors-headers
+python-dotenv
+requests
+sentence-transformers
+faiss-cpu; platform_system != "Windows"
+faiss-cpu==1.8.0.post1; platform_system == "Windows" and platform_machine == "AMD64"
+numpy
+groq
+tqdm
+python-multipart
+
+djangorestframework-simplejwt
+celery
+django-celery-results
+redis

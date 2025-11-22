@@ -1,0 +1,279 @@
+{
+	"info": {
+		"name": "Doctor Appointment APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		}
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register Doctor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"doctor1\",\n    \"email\": \"doctor1@example.com\",\n    \"password\": \"password123\",\n    \"password_confirm\": \"password123\",\n    \"role\": \"doctor\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/signup/",
+							"host": ["{{base_url}}"],
+							"path": ["signup", ""]
+						}
+					}
+				},
+				{
+					"name": "Register Patient",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"patient1\",\n    \"email\": \"patient1@example.com\",\n    \"password\": \"password123\",\n    \"password_confirm\": \"password123\",\n    \"role\": \"patient\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/signup/",
+							"host": ["{{base_url}}"],
+							"path": ["signup", ""]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"doctor1\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/login/",
+							"host": ["{{base_url}}"],
+							"path": ["login", ""]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Doctor",
+			"item": [
+				{
+					"name": "Create Doctor Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"specialization\": \"Cardiology\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/doctor/create/",
+							"host": ["{{base_url}}"],
+							"path": ["doctor", "create", ""]
+						}
+					}
+				},
+				{
+					"name": "List Doctors",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/doctors/",
+							"host": ["{{base_url}}"],
+							"path": ["doctors", ""]
+						}
+					}
+				},
+				{
+					"name": "Doctor Appointments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/doctor/appointments/",
+							"host": ["{{base_url}}"],
+							"path": ["doctor", "appointments", ""]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Patient",
+			"item": [
+				{
+					"name": "Create Patient Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone_number\": \"+1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/patient/create/",
+							"host": ["{{base_url}}"],
+							"path": ["patient", "create", ""]
+						}
+					}
+				},
+				{
+					"name": "Patient Appointments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/patient/appointments/",
+							"host": ["{{base_url}}"],
+							"path": ["patient", "appointments", ""]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Slots",
+			"item": [
+				{
+					"name": "Create Slot",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2024-01-15\",\n    \"start_time\": \"10:00:00\",\n    \"end_time\": \"11:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/slots/create/",
+							"host": ["{{base_url}}"],
+							"path": ["slots", "create", ""]
+						}
+					}
+				},
+				{
+					"name": "List Available Slots",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/slots/",
+							"host": ["{{base_url}}"],
+							"path": ["slots", ""]
+						}
+					}
+				},
+				{
+					"name": "Doctor Slots",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/doctor/slots/",
+							"host": ["{{base_url}}"],
+							"path": ["doctor", "slots", ""]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Appointments",
+			"item": [
+				{
+					"name": "Book Appointment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slot_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/appointments/book/",
+							"host": ["{{base_url}}"],
+							"path": ["appointments", "book", ""]
+						}
+					}
+				}
+			]
+		}
+	]
+}
