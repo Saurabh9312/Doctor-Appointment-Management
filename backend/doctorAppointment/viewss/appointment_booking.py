@@ -82,3 +82,37 @@ class DoctorAppointmentsView(APIView):
         except:
             return Response({'error': 'Doctor profile not found'}, 
                           status=status.HTTP_400_BAD_REQUEST)
+
+
+class CancelAppointmentView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, appointment_id):
+        # Only patients can cancel their own appointments if not visited
+        if request.user.role != 'patient':
+            return Response({'error': 'Only patients can cancel appointments'},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            patient = request.user.patient_profile
+        except Patient.DoesNotExist:
+            return Response({'error': 'Patient profile not found'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            appointment = Appointment.objects.select_related('slot').get(id=appointment_id, patient=patient)
+        except Appointment.DoesNotExist:
+            return Response({'error': 'Appointment not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Only allow cancellation if not visited (status must be 'Booked')
+        if appointment.status != 'Booked':
+            return Response({'error': 'Only non-visited (Booked) appointments can be canceled'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Free the slot and delete the appointment (since no Canceled status is defined)
+        slot = appointment.slot
+        appointment.delete()
+        slot.is_booked = False
+        slot.save()
+
+        return Response({'message': 'Appointment canceled'}, status=status.HTTP_200_OK)

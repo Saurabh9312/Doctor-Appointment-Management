@@ -25,4 +25,9 @@ export const doctorAPI = {
     const response = await apiClient.get('/doctor/appointments/');
     return response.data;
   },
+
+  deleteSlot: async (slotId) => {
+    const response = await apiClient.delete(`/doctor/slots/${slotId}/delete/`);
+    return response.data;
+  },
 };

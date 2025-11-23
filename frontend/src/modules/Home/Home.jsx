@@ -29,7 +29,7 @@ const Home = () => {
           gutterBottom 
           sx={{ 
             fontWeight: 'bold',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #00bcd4 0%, #26a69a 100%)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',

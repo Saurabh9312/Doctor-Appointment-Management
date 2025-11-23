@@ -12,6 +12,7 @@ tqdm
 python-multipart
 
 djangorestframework-simplejwt
+django
 celery
 django-celery-results
 redis

@@ -1,9 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, TextField, Button, Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, IconButton } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Chip,
+  IconButton,
+} from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createSlot, fetchDoctorSlots, clearError } from '../../reducer/doctorSlice';
+import { createSlot, fetchDoctorSlots, clearError, deleteDoctorSlot } from '../../reducer/doctorSlice';
 import ErrorAlert from '../../components/Common/ErrorAlert';
 import SuccessAlert from '../../components/Common/SuccessAlert';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
@@ -53,6 +69,16 @@ const SlotManagement = () => {
     }
   };
 
+  const handleDeleteSlot = async (slotId) => {
+    try {
+      await dispatch(deleteDoctorSlot(slotId)).unwrap();
+      // Optionally refetch:
+      // dispatch(fetchDoctorSlots());
+    } catch (err) {
+      // Error handled by Redux slice
+    }
+  };
+
   if (isLoading && slots.length === 0) return <LoadingSpinner />;
 
   return (
@@ -71,11 +97,11 @@ const SlotManagement = () => {
           <Typography variant="h6" gutterBottom>
             Create New Slot
           </Typography>
-          
+
           <ErrorAlert error={error} onClose={() => dispatch(clearError())} />
-          <SuccessAlert 
-            message={success ? "Slot created successfully!" : null} 
-            onClose={() => setSuccess(false)} 
+          <SuccessAlert
+            message={success ? 'Slot created successfully!' : null}
+            onClose={() => setSuccess(false)}
           />
 
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
@@ -128,7 +154,7 @@ const SlotManagement = () => {
           <Typography variant="h6" gutterBottom>
             Your Slots
           </Typography>
-          
+
           {slots.length === 0 ? (
             <Typography variant="body2" color="text.secondary">
               No slots created yet. Create your first slot above.
@@ -142,6 +168,7 @@ const SlotManagement = () => {
                     <TableCell>Start Time</TableCell>
                     <TableCell>End Time</TableCell>
                     <TableCell>Status</TableCell>
+                    <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -151,11 +178,22 @@ const SlotManagement = () => {
                       <TableCell>{slot.start_time}</TableCell>
                       <TableCell>{slot.end_time}</TableCell>
                       <TableCell>
-                        <Chip 
-                          label={slot.is_booked ? 'Booked' : 'Available'} 
+                        <Chip
+                          label={slot.is_booked ? 'Booked' : 'Available'}
                           color={slot.is_booked ? 'error' : 'success'}
                           size="small"
                         />
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          color="error"
+                          variant="outlined"
+                          size="small"
+                          disabled={slot.is_booked || isLoading}
+                          onClick={() => handleDeleteSlot(slot.id)}
+                        >
+                          Delete
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}

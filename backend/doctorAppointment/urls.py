@@ -2,8 +2,8 @@ from django.urls import path, include
 from .viewss.auth_views import RegisterAPIView, LoginAPIView
 from .viewss.doctor_registration import DoctorCreateView, DoctorListView
 from .viewss.patient_registration import PatientCreateView, PatientListView
-from .viewss.slot_management import SlotCreateView, SlotListView, DoctorSlotsView
-from .viewss.appointment_booking import AppointmentBookView, PatientAppointmentsView, DoctorAppointmentsView
+from .viewss.slot_management import SlotCreateView, SlotListView, DoctorSlotsView, SlotDeleteView
+from .viewss.appointment_booking import AppointmentBookView, PatientAppointmentsView, DoctorAppointmentsView, CancelAppointmentView
 from .viewss.admin_appointment_overview import AdminAppointmentOverviewView
 from .viewss.appointment_status import UpdateAppointmentStatusView, DoctorAppointmentStatusView
 from .viewss.admin_management import (
@@ -32,10 +32,12 @@ urlpatterns = [
     path('slots/create/', SlotCreateView.as_view(), name='slot-create'),
     path('slots/', SlotListView.as_view(), name='slot-list'),
     path('doctor/slots/', DoctorSlotsView.as_view(), name='doctor-slots'),
+    path('doctor/slots/<int:slot_id>/delete/', SlotDeleteView.as_view(), name='doctor-slot-delete'),
     
     # Appointments
     path('appointments/book/', AppointmentBookView.as_view(), name='appointment-book'),
     path('patient/appointments/', PatientAppointmentsView.as_view(), name='patient-appointments'),
+    path('appointments/<int:appointment_id>/cancel/', CancelAppointmentView.as_view(), name='appointment-cancel'),
     path('doctor/appointments/', DoctorAppointmentsView.as_view(), name='doctor-appointments'),
     
     # Admin

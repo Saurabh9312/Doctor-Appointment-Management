@@ -25,6 +25,18 @@ export const fetchPatientAppointments = createAsyncThunk(
   }
 );
 
+export const cancelPatientAppointment = createAsyncThunk(
+  'patient/cancelAppointment',
+  async (appointmentId, { rejectWithValue }) => {
+    try {
+      await patientAPI.cancelAppointment(appointmentId);
+      return appointmentId;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Failed to cancel appointment');
+    }
+  }
+);
+
 const patientSlice = createSlice({
   name: 'patient',
   initialState: {
@@ -52,6 +64,18 @@ const patientSlice = createSlice({
       })
       .addCase(fetchPatientAppointments.fulfilled, (state, action) => {
         state.appointments = action.payload;
+      })
+      .addCase(cancelPatientAppointment.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(cancelPatientAppointment.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.appointments = state.appointments.filter((a) => a.id !== action.payload);
+      })
+      .addCase(cancelPatientAppointment.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

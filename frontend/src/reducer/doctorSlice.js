@@ -49,6 +49,18 @@ export const fetchDoctorSlots = createAsyncThunk(
   }
 );
 
+export const deleteDoctorSlot = createAsyncThunk(
+  'doctor/deleteSlot',
+  async (slotId, { rejectWithValue }) => {
+    try {
+      await doctorAPI.deleteSlot(slotId);
+      return slotId;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Failed to delete slot');
+    }
+  }
+);
+
 const doctorSlice = createSlice({
   name: 'doctor',
   initialState: {
@@ -91,6 +103,18 @@ const doctorSlice = createSlice({
       })
       .addCase(fetchDoctorSlots.fulfilled, (state, action) => {
         state.slots = action.payload;
+      })
+      .addCase(deleteDoctorSlot.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteDoctorSlot.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.slots = state.slots.filter((slot) => slot.id !== action.payload);
+      })
+      .addCase(deleteDoctorSlot.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

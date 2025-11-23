@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { Card, CardContent, Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, IconButton } from '@mui/material';
+import { Card, CardContent, Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, IconButton, Button } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchPatientAppointments } from '../../reducer/patientSlice';
+import { fetchPatientAppointments, cancelPatientAppointment } from '../../reducer/patientSlice';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
 
 const PatientAppointments = () => {
@@ -23,6 +23,17 @@ const PatientAppointments = () => {
     };
     loadAppointments();
   }, [dispatch, navigate]);
+
+   const handleCancelAppointment = async (slotId) => {
+      try {
+        await dispatch(cancelPatientAppointment(slotId)).unwrap();
+        // Optionally refetch:
+        // dispatch(fetchDoctorSlots());
+      } catch (err) {
+        // Error handled by Redux slice
+      }
+    };
+  
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -52,6 +63,7 @@ const PatientAppointments = () => {
                     <TableCell>Date</TableCell>
                     <TableCell>Time</TableCell>
                     <TableCell>Status</TableCell>
+                    <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -66,6 +78,18 @@ const PatientAppointments = () => {
                           color={appointment.status === 'Visited' ? 'success' : 'warning'}
                           size="small"
                         />
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          color="error"
+                          variant="outlined"
+                          size="small"
+                          disabled={appointment.status !== 'Booked'}
+                          onClick={() => handleCancelAppointment(appointment.id)}
+
+                        >
+                          Cancel
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
