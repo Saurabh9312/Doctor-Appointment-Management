@@ -132,7 +132,7 @@ const AdminDashboard = () => {
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
               Manage Doctors
             </Typography>
-            <Button variant="contained" startIcon={<Add />} onClick={() => { setEditingDoctor(null); setDoctorForm({ user_id: '', name: '', specialization: '' }); setOpenDoctorDialog(true); }}>Add Doctor Profile</Button>
+            <Button sx = {{color: 'black'}} variant="contained" startIcon={<Add />} onClick={() => { setEditingDoctor(null); setDoctorForm({ user_id: '', name: '', specialization: '' }); setOpenDoctorDialog(true); }}>Add Doctor Profile</Button>
           </Box>
 
           <TableContainer component={Paper}>
@@ -174,7 +174,7 @@ const AdminDashboard = () => {
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
               Manage Patients
             </Typography>
-            <Button variant="contained" startIcon={<Add />} onClick={() => { setEditingPatient(null); setPatientForm({ user_id: '', name: '', phone_number: '' }); setOpenPatientDialog(true); }}>Add Patient Profile</Button>
+            <Button variant="contained" sx = {{color: 'black'}} startIcon={<Add />} onClick={() => { setEditingPatient(null); setPatientForm({ user_id: '', name: '', phone_number: '' }); setOpenPatientDialog(true); }}>Add Patient Profile</Button>
           </Box>
 
           <TableContainer component={Paper}>

@@ -89,7 +89,7 @@ const PatientDashboard = () => {
                 variant="contained" 
                 onClick={() => navigate('/patient/book-appointment')}
                 fullWidth
-                sx={{ borderRadius: 2 }}
+                sx={{ borderRadius: 2, color : 'black' }}
               >
                 Book New Appointment
               </Button>
@@ -110,7 +110,7 @@ const PatientDashboard = () => {
                 variant="contained" 
                 onClick={() => navigate('/patient/appointments')}
                 fullWidth
-                sx={{ borderRadius: 2 }}
+                sx={{ borderRadius: 2, color : 'black' }}
               >
                 View Appointments
               </Button>

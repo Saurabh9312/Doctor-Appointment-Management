@@ -95,6 +95,7 @@ const BookAppointment = () => {
                         <Button
                           variant="contained"
                           size="small"
+                          sx = {{color : 'black'}}
                           onClick={() => handleBookSlot(slot)}
                         >
                           Book

@@ -106,7 +106,7 @@ const DoctorDashboard = () => {
                 variant="contained" 
                 onClick={() => navigate('/doctor/slots')}
                 fullWidth
-                sx={{ borderRadius: 2 }}
+                sx={{ borderRadius: 2 , color : 'black'}}
               >
                 Manage Slots
               </Button>
@@ -127,7 +127,7 @@ const DoctorDashboard = () => {
                 variant="contained" 
                 onClick={() => navigate('/doctor/appointments')}
                 fullWidth
-                sx={{ borderRadius: 2 }}
+                sx={{ borderRadius: 2, color: 'black' }}
               >
                 View Appointments
               </Button>

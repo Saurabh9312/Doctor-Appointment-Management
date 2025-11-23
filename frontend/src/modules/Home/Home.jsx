@@ -48,7 +48,7 @@ const Home = () => {
               variant="contained" 
               size="large"
               onClick={() => navigate('/register/patient')}
-              sx={{ borderRadius: 2 }}
+              sx={{ borderRadius: 2, color: 'black' }}
             >
               Signup as Patient
             </Button>
@@ -56,7 +56,7 @@ const Home = () => {
               variant="contained" 
               size="large"
               onClick={() => navigate('/register/doctor')}
-              sx={{ borderRadius: 2 }}
+              sx={{ borderRadius: 2, color : "black" }}
             >
               Signup as Doctor
             </Button>

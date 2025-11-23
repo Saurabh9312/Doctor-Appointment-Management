@@ -89,8 +89,8 @@ const ChatWidget = () => {
               alignItems: 'center' 
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>AI Support</Typography>
-            <IconButton size="small" onClick={toggleChat} sx={{ color: 'white' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black' }}>AI Support</Typography>
+            <IconButton size="small" onClick={toggleChat} sx={{ color: 'black' }}>
               <CloseIcon />
             </IconButton>
           </Box>
@@ -155,7 +155,7 @@ const ChatWidget = () => {
       <Fab 
         sx={{
           background: 'linear-gradient(135deg, #00bcd4 0%, #26a69a 100%)',
-          color: 'white',
+          color: 'black',
           '&:hover': {
             background: 'linear-gradient(135deg, #008ba3 0%, #00766c 100%)',
             boxShadow: '0px 4px 12px rgba(0, 188, 212, 0.4)'

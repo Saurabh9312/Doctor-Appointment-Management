@@ -40,26 +40,25 @@ const Navbar = ({ onMenuClick }) => {
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {isMobile && (
             <IconButton
-              color="inherit"
               edge="start"
               onClick={onMenuClick}
-              sx={{ mr: 2 }}
+              sx={{ mr: 2, color: 'black' }}
             >
-              <MenuIcon />
+              <MenuIcon color="inherit" sx={{ color: 'black' }} />   
             </IconButton>
           )}
           <Box 
             sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} 
             onClick={() => navigate('/')}
           >
-            <LocalHospital sx={{ mr: 1, fontSize: 28 }} />
+            <LocalHospital sx={{ mr: 1, fontSize: 28, color: 'black' }} />
             <Typography 
               variant="h6" 
               component="div" 
               sx={{ 
                 fontWeight: 'bold',
                 display: { xs: 'none', sm: 'block' },
-                background: 'linear-gradient(45deg, #fff 30%, #f0f0f0 90%)',
+                background: 'black',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -88,23 +87,25 @@ const Navbar = ({ onMenuClick }) => {
                 sx={{ 
                   display: { xs: 'none', sm: 'flex' },
                   borderRadius: 2,
+                  color: 'black',
                   px: 2,
                   '&:hover': {
                     bgcolor: 'rgba(255,255,255,0.1)',
                   }
                 }}
               >
-                <Dashboard sx={{ mr: 1, fontSize: 20 }} />
+                <Dashboard sx={{ mr: 1, fontSize: 20, color: 'black' }} />
                 Dashboard
               </Button>
               
               <Button 
                 color="inherit" 
                 onClick={handleLogout} 
-                startIcon={<ExitToApp />}
+                startIcon={<ExitToApp sx={{ color: 'black' }} />}
                 sx={{
                   borderRadius: 2,
                   px: { xs: 1, sm: 2 },
+                  color: 'black',
                   minWidth: 'auto',
                   '&:hover': {
                     bgcolor: 'rgba(255,255,255,0.1)',
@@ -123,6 +124,7 @@ const Navbar = ({ onMenuClick }) => {
                 onClick={() => navigate('/login')}
                 sx={{
                   borderRadius: 2,
+                  color : "black",
                   px: 2,
                   '&:hover': {
                     bgcolor: 'rgba(255,255,255,0.1)',
@@ -136,8 +138,8 @@ const Navbar = ({ onMenuClick }) => {
                 onClick={() => navigate('/register')}
                 sx={{
                   borderRadius: 2,
+                  color: 'black',
                   px: 2,
-                  bgcolor: 'rgba(255,255,255,0.15)',
                   '&:hover': {
                     bgcolor: 'rgba(255,255,255,0.25)',
                   }

@@ -100,7 +100,7 @@ const Sidebar = ({ open, onClose, collapsed, onToggleCollapse }) => {
         <IconButton
           onClick={onToggleCollapse}
           sx={{
-            color: 'white',
+            color: 'black',
             '&:hover': {
               bgcolor: 'rgba(255,255,255,0.1)'
             }
@@ -226,10 +226,10 @@ const Sidebar = ({ open, onClose, collapsed, onToggleCollapse }) => {
       {!collapsed && (
         <Box sx={{ p: 2, borderTop: '1px solid rgba(0, 188, 212, 0.2)' }}>
           <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', color: '#b0bec5' }}>
-            Doctor Appointment System
+            Doctor Appointment System 
           </Typography>
           <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', color: '#78909c' }}>
-            © 2025 All Rights Reserved
+            © 2025 All Rights Reserved to SP
           </Typography>
         </Box>
       )}

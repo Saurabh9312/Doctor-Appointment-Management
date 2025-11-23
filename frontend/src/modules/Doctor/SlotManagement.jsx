@@ -140,7 +140,7 @@ const SlotManagement = () => {
                 type="submit"
                 variant="contained"
                 disabled={isLoading}
-                sx={{ minWidth: 120 }}
+                sx={{ minWidth: 120, color : "black" }}
               >
                 Create Slot
               </Button>
