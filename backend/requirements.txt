@@ -16,3 +16,6 @@ django
 celery
 django-celery-results
 redis
+gunicorn
+whitenoise
+waitress

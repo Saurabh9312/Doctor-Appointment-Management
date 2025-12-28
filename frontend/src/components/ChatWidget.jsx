@@ -38,7 +38,8 @@ const ChatWidget = () => {
     try {
       const payload = { query: input };
       if (sessionId) payload.session_id = sessionId;
-      const response = await axios.post('http://127.0.0.1:8000/api/bot/chat/', payload);
+      const baseUrl = import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace('/api', '') : 'http://127.0.0.1:8000';
+      const response = await axios.post(`${baseUrl}/api/bot/chat/`, payload);
 
       // Persist session id for subsequent turns
       if (!sessionId && response.data.session_id) {
@@ -79,14 +80,14 @@ const ChatWidget = () => {
           }}
         >
           {/* Header */}
-          <Box 
-            sx={{ 
-              p: 2, 
+          <Box
+            sx={{
+              p: 2,
               background: 'linear-gradient(135deg, #00bcd4 0%, #26a69a 100%)',
-              color: 'white', 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center' 
+              color: 'white',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
             }}
           >
             <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black' }}>AI Support</Typography>
@@ -116,7 +117,7 @@ const ChatWidget = () => {
               ))}
               {isLoading && (
                 <ListItem sx={{ justifyContent: 'flex-start' }}>
-                   <CircularProgress size={20} />
+                  <CircularProgress size={20} />
                 </ListItem>
               )}
               <div ref={messagesEndRef} />
@@ -135,9 +136,9 @@ const ChatWidget = () => {
               onKeyPress={handleKeyPress}
               disabled={isLoading}
             />
-            <IconButton 
-              color="primary" 
-              onClick={handleSend} 
+            <IconButton
+              color="primary"
+              onClick={handleSend}
               disabled={isLoading || !input.trim()}
               sx={{
                 color: '#00bcd4',
@@ -152,7 +153,7 @@ const ChatWidget = () => {
         </Paper>
       )}
 
-      <Fab 
+      <Fab
         sx={{
           background: 'linear-gradient(135deg, #00bcd4 0%, #26a69a 100%)',
           color: 'black',
@@ -161,7 +162,7 @@ const ChatWidget = () => {
             boxShadow: '0px 4px 12px rgba(0, 188, 212, 0.4)'
           }
         }}
-        aria-label="chat" 
+        aria-label="chat"
         onClick={toggleChat}
       >
         {isOpen ? <CloseIcon /> : <ChatIcon />}
