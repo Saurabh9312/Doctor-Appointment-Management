@@ -3,7 +3,7 @@ import { Box, Fab, Paper, Typography, TextField, IconButton, List, ListItem, Lis
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
-import axios from 'axios';
+import apiClient from '../api_client/apiClient';
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,8 +38,8 @@ const ChatWidget = () => {
     try {
       const payload = { query: input };
       if (sessionId) payload.session_id = sessionId;
-      const baseUrl = import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace('/api', '') : 'http://127.0.0.1:8000';
-      const response = await axios.post(`${baseUrl}/api/bot/chat/`, payload);
+
+      const response = await apiClient.post('/bot/chat/', payload);
 
       // Persist session id for subsequent turns
       if (!sessionId && response.data.session_id) {

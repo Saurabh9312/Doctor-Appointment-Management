@@ -54,9 +54,16 @@ INSTALLED_APPS = [
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://doctor-appointment-management-2.onrender.com',
+]
 
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://localhost:5173').split(',')
+CSRF_TRUSTED_ORIGINS = [
+    'https://doctor-appointment-management-2.onrender.com',
+]
+
 CORS_ALLOW_CREDENTIALS = True
 
 
