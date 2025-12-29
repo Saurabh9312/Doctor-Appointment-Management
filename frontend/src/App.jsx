@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import keepAliveService from './services/keepAliveService';
 
 import store from './store';
 import Layout from './components/Layout/Layout';
@@ -155,6 +157,16 @@ const theme = createTheme({
 });
 
 const App = () => {
+  useEffect(() => {
+    // Start the keep-alive service when the app mounts
+    keepAliveService.start();
+    
+    // Cleanup function to stop the service when the app unmounts
+    return () => {
+      keepAliveService.stop();
+    };
+  }, []);
+  
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>

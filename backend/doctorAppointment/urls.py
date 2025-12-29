@@ -14,6 +14,7 @@ from .viewss.admin_management import (
 )
 from .viewss.login_history import LoginHistoryView, UserLoginStatsView
 from .chatbot import ChatbotAPIView
+from .views import KeepAliveView
 
 urlpatterns = [
     # Auth
@@ -57,4 +58,7 @@ urlpatterns = [
     # Login History
     path('login-history/', LoginHistoryView.as_view(), name='login-history'),
     path('login-stats/', UserLoginStatsView.as_view(), name='login-stats'),
+    
+    # Keep-alive endpoint
+    path('keep-alive/', KeepAliveView.as_view(), name='keep-alive'),
 ]
