@@ -19,3 +19,4 @@ redis
 gunicorn
 whitenoise
 waitress
+psycopg2-binary
