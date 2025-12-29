@@ -60,6 +60,10 @@ CORS_ALLOWED_ORIGINS = [
     'https://doctor-appointment-management-2.onrender.com',
 ]
 
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.onrender\.com$",
+]
+
 CSRF_TRUSTED_ORIGINS = [
     'https://doctor-appointment-management-2.onrender.com',
 ]
