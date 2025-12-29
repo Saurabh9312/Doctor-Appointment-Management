@@ -1,6 +1,7 @@
 import os
 import json
 import pickle
+import time
 from pathlib import Path
 from typing import List, Tuple, Dict, Any
 
@@ -62,15 +63,27 @@ class RAGChatbot:
 
         # Try load index, otherwise build
         if self.index_file.exists() and self.store_file.exists():
-            self._load_index()
+            try:
+                self._load_index()
+            except Exception as e:
+                print(f"Failed to load existing index, rebuilding: {e}")
+                self._build_index_from_knowledge()
         else:
             self._build_index_from_knowledge()
 
     # ------------------------ Embeddings & FAISS ------------------------
     def _ensure_embedding_model(self):
         if self._embedding_model is None:
-            from sentence_transformers import SentenceTransformer
-            self._embedding_model = SentenceTransformer(self.embedding_model_name)
+            try:
+                from sentence_transformers import SentenceTransformer
+                self._embedding_model = SentenceTransformer(self.embedding_model_name, trust_remote_code=True)
+            except ImportError:
+                raise ImportError(
+                    "sentence-transformers is not installed. Please install it with: pip install sentence-transformers"
+                )
+            except Exception as e:
+                # Handle memory issues or other loading errors
+                raise RuntimeError(f"Failed to load embedding model '{self.embedding_model_name}': {str(e)}. This might be due to memory constraints in the deployment environment.")
         return self._embedding_model
 
     def _ensure_faiss(self):
@@ -137,7 +150,12 @@ class RAGChatbot:
         if self._index is None:
             self._load_index()
         k = k or self.top_k
-        qv = self._embed([query])
+        try:
+            qv = self._embed([query])
+        except Exception as e:
+            # Return empty results if embedding fails
+            print(f"Embedding error: {e}")
+            return []
         scores, idxs = self._index.search(qv, k)
         results = []
         for score, idx in zip(scores[0], idxs[0]):
@@ -199,8 +217,12 @@ class RAGChatbot:
             return f"Failed to generate answer: {e}"
 
     def answer(self, query: str, history: Optional[List[Dict[str, str]]] = None) -> Dict[str, Any]:
-        retrieved = self.retrieve(query)
-        chunks = [c for c, _ in retrieved]
+        try:
+            retrieved = self.retrieve(query)
+            chunks = [c for c, _ in retrieved]
+        except Exception as e:
+            print(f"Retrieval error: {e}")
+            chunks = []
         answer = self.generate(query, chunks, history=history)
         return {
             "response": answer,
@@ -212,14 +234,21 @@ class RAGChatbot:
 _CHAT_HISTORY_LIMIT = 12
 _chat_histories: Dict[str, Any] = {}
 
+# Default session ID for when session management fails
+DEFAULT_SESSION_ID = "default_session"
+
 # Singleton chatbot instance
 _data_dir = Path(__file__).resolve().parent / "data"
-_chatbot = RAGChatbot(
-    data_dir=_data_dir,
-    knowledge_file=_data_dir / "hospital.txt",
-    index_file=_data_dir / "faiss.index",
-    store_file=_data_dir / "chunks.pkl",
-)
+try:
+    _chatbot = RAGChatbot(
+        data_dir=_data_dir,
+        knowledge_file=_data_dir / "hospital.txt",
+        index_file=_data_dir / "faiss.index",
+        store_file=_data_dir / "chunks.pkl",
+    )
+except Exception as e:
+    print(f"Failed to initialize chatbot: {e}")
+    _chatbot = None
 
 
 class ChatbotAPIView(APIView):
@@ -227,6 +256,9 @@ class ChatbotAPIView(APIView):
 
     def post(self, request: Request):
         try:
+            # Debug: Check if this is actually being called
+            print(f"Chatbot POST endpoint called. Chatbot available: {_chatbot is not None}")
+            
             body = request.data or {}
             query = body.get("query", "")
             session_id = body.get("session_id")
@@ -236,7 +268,11 @@ class ChatbotAPIView(APIView):
                 return JsonResponse({"error": "Field 'query' is required."}, status=400)
 
             if not session_id or not isinstance(session_id, str):
-                session_id = str(uuid.uuid4())
+                try:
+                    session_id = str(uuid.uuid4())
+                except Exception:
+                    # Fallback if UUID generation fails
+                    session_id = f"session_{int(time.time())}"
 
             # Initialize or reset history
             history = _chat_histories.get(session_id)
@@ -247,8 +283,18 @@ class ChatbotAPIView(APIView):
             # Prepare plain list for the model
             history_list = list(history)
 
-            # Get answer with history-aware generation
-            result = _chatbot.answer(query, history=history_list)
+            # Check if chatbot is available
+            if _chatbot is None:
+                result = {
+                    "response": "Chatbot is not available. The model failed to initialize due to missing dependencies or memory constraints.",
+                    "context": [],
+                    "session_id": session_id
+                }
+            else:
+                # Get answer with history-aware generation
+                result = _chatbot.answer(query, history=history_list)
+                # Append session_id to result
+                result["session_id"] = session_id
 
             # Append this turn to history
             history.append({"role": "user", "content": query})
@@ -256,11 +302,13 @@ class ChatbotAPIView(APIView):
             _chat_histories[session_id] = history
 
             # Return session id so client can persist it
-            result["session_id"] = session_id
+            print(f"Returning result: {result}")
             return JsonResponse(result, status=200)
         except Exception as e:
+            print(f"Error in chatbot POST: {e}")
             return JsonResponse({"error": str(e)}, status=500)
 
     def get(self, request: Request):
         # Simple health check
-        return JsonResponse({"status": "ok", "ready": True}, status=200)
+        is_ready = _chatbot is not None
+        return JsonResponse({"status": "ok", "ready": is_ready}, status=200 if is_ready else 503)
