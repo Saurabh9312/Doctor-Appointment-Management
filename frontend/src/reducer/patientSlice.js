@@ -1,18 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { patientAPI } from '../api_client/patientAPI';
 
-export const createPatientProfile = createAsyncThunk(
-  'patient/createProfile',
-  async (profileData, { rejectWithValue }) => {
-    try {
-      const response = await patientAPI.createProfile(profileData);
-      return response;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.error || 'Failed to create profile');
-    }
-  }
-);
-
 export const fetchPatientAppointments = createAsyncThunk(
   'patient/fetchAppointments',
   async (_, { rejectWithValue }) => {
@@ -51,17 +39,6 @@ const patientSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createPatientProfile.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(createPatientProfile.fulfilled, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(createPatientProfile.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
       .addCase(fetchPatientAppointments.fulfilled, (state, action) => {
         state.appointments = action.payload;
       })

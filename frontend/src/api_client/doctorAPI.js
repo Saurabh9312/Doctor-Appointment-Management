@@ -1,11 +1,6 @@
 import apiClient from './apiClient';
 
 export const doctorAPI = {
-  createProfile: async (profileData) => {
-    const response = await apiClient.post('/doctor/create/', profileData);
-    return response.data;
-  },
-
   getDoctors: async () => {
     const response = await apiClient.get('/doctors/');
     return response.data;

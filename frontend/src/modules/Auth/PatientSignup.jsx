@@ -13,6 +13,7 @@ const PatientSignup = () => {
     email: '',
     password: '',
     password_confirm: '',
+    phone_number: '',
     role: 'patient',
   });
 
@@ -24,10 +25,10 @@ const PatientSignup = () => {
     if (isAuthenticated) {
       switch (role) {
         case 'doctor':
-          navigate('/doctor/profile-setup');
+          navigate('/doctor/dashboard');
           break;
         case 'patient':
-          navigate('/patient/profile-setup');
+          navigate('/patient/dashboard');
           break;
         case 'admin':
           navigate('/admin/dashboard');
@@ -115,6 +116,16 @@ const PatientSignup = () => {
               required
               error={formData.password !== formData.password_confirm && formData.password_confirm !== ''}
               helperText={formData.password !== formData.password_confirm && formData.password_confirm !== '' ? "Passwords don't match" : ''}
+            />
+            <TextField
+              fullWidth
+              label="Phone Number"
+              name="phone_number"
+              value={formData.phone_number}
+              onChange={handleChange}
+              margin="normal"
+              required
+              placeholder="e.g., +1234567890"
             />
             <Button
               type="submit"

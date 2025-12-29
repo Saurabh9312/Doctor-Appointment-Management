@@ -13,6 +13,7 @@ const DoctorSignup = () => {
     email: '',
     password: '',
     password_confirm: '',
+    specialization: '',
     role: 'doctor',
   });
 
@@ -24,10 +25,10 @@ const DoctorSignup = () => {
     if (isAuthenticated) {
       switch (role) {
         case 'doctor':
-          navigate('/doctor/profile-setup');
+          navigate('/doctor/dashboard');
           break;
         case 'patient':
-          navigate('/patient/profile-setup');
+          navigate('/patient/dashboard');
           break;
         case 'admin':
           navigate('/admin/dashboard');
@@ -115,6 +116,16 @@ const DoctorSignup = () => {
               required
               error={formData.password !== formData.password_confirm && formData.password_confirm !== ''}
               helperText={formData.password !== formData.password_confirm && formData.password_confirm !== '' ? "Passwords don't match" : ''}
+            />
+            <TextField
+              fullWidth
+              label="Specialization"
+              name="specialization"
+              value={formData.specialization}
+              onChange={handleChange}
+              margin="normal"
+              required
+              placeholder="e.g., Cardiology, Dermatology, Pediatrics"
             />
             <Button
               type="submit"

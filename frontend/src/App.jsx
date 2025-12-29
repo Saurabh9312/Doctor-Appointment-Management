@@ -22,13 +22,11 @@ import DoctorSignup from './modules/Auth/DoctorSignup';
 import Unauthorized from './modules/Common/Unauthorized';
 
 // Doctor module pages
-import DoctorProfileSetup from './modules/Doctor/DoctorProfileSetup';
 import DoctorDashboard from './modules/Doctor/DoctorDashboard';
 import SlotManagement from './modules/Doctor/SlotManagement';
 import DoctorAppointments from './modules/Doctor/DoctorAppointments';
 
 // Patient module pages
-import PatientProfileSetup from './modules/Patient/PatientProfileSetup';
 import PatientDashboard from './modules/Patient/PatientDashboard';
 import BookAppointment from './modules/Patient/BookAppointment';
 import PatientAppointments from './modules/Patient/PatientAppointments';
@@ -183,11 +181,6 @@ const App = () => {
               <Route path="/unauthorized" element={<Unauthorized />} />
 
               {/* Doctor Routes */}
-              <Route path="/doctor/profile-setup" element={
-                <PrivateRoute allowedRoles={['doctor']}>
-                  <DoctorProfileSetup />
-                </PrivateRoute>
-              } />
               <Route path="/doctor/dashboard" element={
                 <PrivateRoute allowedRoles={['doctor']}>
                   <DoctorDashboard />
@@ -205,11 +198,6 @@ const App = () => {
               } />
 
               {/* Patient Routes */}
-              <Route path="/patient/profile-setup" element={
-                <PrivateRoute allowedRoles={['patient']}>
-                  <PatientProfileSetup />
-                </PrivateRoute>
-              } />
               <Route path="/patient/dashboard" element={
                 <PrivateRoute allowedRoles={['patient']}>
                   <PatientDashboard />

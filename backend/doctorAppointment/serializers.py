@@ -9,10 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
     password_confirm = serializers.CharField(write_only=True)
+    phone_number = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    specialization = serializers.CharField(write_only=True, required=False, allow_blank=True)
 
     class Meta:
         model = User
-        fields = ['first_name', 'username', 'email', 'password', 'password_confirm', 'role']
+        fields = ['first_name', 'username', 'email', 'password', 'password_confirm', 'role', 'phone_number', 'specialization']
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirm']:
@@ -20,8 +22,29 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        # Extract additional fields before creating user
+        phone_number = validated_data.pop('phone_number', '')
+        specialization = validated_data.pop('specialization', '')
+        
         validated_data.pop('password_confirm')
         user = User.objects.create_user(**validated_data)
+        
+        # Create profile based on role
+        if user.role == 'doctor':
+            from .models import Doctor
+            Doctor.objects.create(
+                user=user,
+                name=validated_data.get('first_name', ''),
+                specialization=specialization
+            )
+        elif user.role == 'patient':
+            from .models import Patient
+            Patient.objects.create(
+                user=user,
+                name=validated_data.get('first_name', ''),
+                phone_number=phone_number
+            )
+        
         return user
 
 class DoctorSerializer(serializers.ModelSerializer):
