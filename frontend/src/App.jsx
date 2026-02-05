@@ -12,6 +12,7 @@ import Layout from './components/Layout/Layout';
 import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 import ChatWidget from './components/ChatWidget';
+import InstallPWA from './components/InstallPWA';
 
 // Public pages
 import Home from './modules/Home/Home';
@@ -223,6 +224,7 @@ const App = () => {
             </Routes>
           </Layout>
           <ChatWidget />
+          <InstallPWA />
         </Router>
       </ThemeProvider>
     </Provider>
